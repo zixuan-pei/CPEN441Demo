@@ -104,6 +104,7 @@ class MainPage {
             <div>
                 <div><a href = "#/currentApp">Current app</a></div>
                 <div><a href = "#/ourApp">Our app</a></div>
+                <div><a href = "#/weather">Weather</a></div>
                 <div><a href = "#/control">Control</a></div>
             </div>`);
     }
@@ -151,7 +152,14 @@ class OurApp {
             let timeOnRoad = info.distance / info.speed;
             departTime = new Date(meetingTime - timeOnRoad * 60000);
             this.time.innerText = 'Estimated departure time: ' + timeToString(departTime);
-            this.weather.innerText = 'Weather: ' + info.weather;
+            let weatherMessage;
+            if(info.weather === 'snow')
+                weatherMessage = 'Today\'s temperature is -1 ~ 2.';
+            else if(info.weather === 'sunny')
+                weatherMessage = 'Today\'s temperature is 20 ~ 24.';
+            else if(info.weather === 'rain')
+                weatherMessage = 'Today\'s temperature is 8 ~ 12.'
+            this.weather.innerText = 'Weather: ' + info.weather + '\n' + weatherMessage;
             weather = info.weather;
             this.currtime.innerText = 'Current time: ' + timeToString(new Date(time));
         })
@@ -234,6 +242,34 @@ class CurrApp {
     }
 }
 
+class Weather {
+    constructor() {
+        this.elem = createDOM(`
+            <div>
+                <div>
+                    <span id="weather">Weather: </span>
+                </div>
+            </div>`);
+        // this.currtime = this.elem.querySelector("#currTime");
+        // this.time = this.elem.querySelector("#ourTime");
+        this.weather = this.elem.querySelector("#weather");
+    }
+
+    refresh() {
+        Service.getTravelInfo().then(info => {
+            let weatherMessage;
+            if(info.weather === 'snow')
+                weatherMessage = 'Today\'s temperature is -1 ~ 2.';
+            else if(info.weather === 'sunny')
+                weatherMessage = 'Today\'s temperature is 20 ~ 24.';
+            else if(info.weather === 'rain')
+                weatherMessage = 'Today\'s temperature is 8 ~ 12.'
+            this.weather.innerText = 'Weather: ' + info.weather + '\n' + weatherMessage;
+            weather = info.weather;
+        })
+    }
+}
+
 class Control {
     constructor(socket) {
         this.elem = createDOM(`
@@ -293,6 +329,7 @@ class Control {
 }
 
 function main() {
+    let weatherPage = new Weather();
     let ourApp = new OurApp();
     let currApp = new CurrApp();
     let control = new Control();
@@ -300,22 +337,24 @@ function main() {
     let renderRoute = () => {
         let url = window.location.hash;
         let pageView;
+        let ret;
         if(url === '#/') {
             pageView = document.getElementById("page");
             emptyDOM(pageView);
             pageView.appendChild(mainPage.elem);
+            clearInterval(ret);
         } else if(url.includes('ourApp')) {
-            let ret = setInterval(() => {
-                if (departTime <= new Date(time)) {
+            ret = setInterval(() => {
+                if (departTime <= new Date(time).setMinutes(new Date(time).getMinutes() + 1)) {
 
                     /* Alert message */
-                    let alertMessage = "You should leave now.";
+                    let alertMessage = "You should leave at " + timeToString(departTime);
                     if (weather === 'snow')
-                        alertMessage += "It is snowing outside. Wear clothes and bring an umbrella.";
+                        alertMessage += ". It is snowing outside. Wear clothes and bring an umbrella.";
                     else if (weather === 'rain')
-                        alertMessage += "It is raining outside. Bring an umbrella.";
+                        alertMessage += ". It is raining outside. Bring an umbrella.";
                     else if (weather === 'sunny')
-                        alertMessage += "It's sunny outside. Have a nice day!";
+                        alertMessage += ". It's sunny outside. Have a nice day!";
 
                     /* Alert audio */
                     // let alertAudio = document.createElement('audio');
@@ -342,10 +381,18 @@ function main() {
             pageView = document.getElementById("page");
             emptyDOM(pageView);
             pageView.appendChild(currApp.elem);
+            clearInterval(ret);
         } else if(url.includes('control')) {
             pageView = document.getElementById("page");
             emptyDOM(pageView);
             pageView.appendChild(control.elem);
+            clearInterval(ret);
+        } else if(url.includes('weather')) {
+            weatherPage.refresh();
+            pageView = document.getElementById("page");
+            emptyDOM(pageView);
+            pageView.appendChild( weatherPage.elem);
+            clearInterval(ret);
         }
     };
     let renderInfo = () => {
@@ -358,12 +405,23 @@ function main() {
             pageView.appendChild(ourApp.elem);
         }
     }
+    let renderWeather = () => {
+        let url = window.location.hash;
+        let pageView;
+        if(url.includes('weather')) {
+            weatherPage.refresh();
+            pageView = document.getElementById("page");
+            emptyDOM(pageView);
+            pageView.appendChild( weatherPage.elem);
+        }
+    }
     let refreshTime = () => {
        currApp.refresh();
     }
     window.addEventListener("popstate", renderRoute);
     renderRoute();
     setInterval(renderInfo, 1000);
+    setInterval(renderWeather, 1000);
     setInterval(refreshTime, 1000);
 }
 
