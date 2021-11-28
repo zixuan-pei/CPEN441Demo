@@ -122,10 +122,28 @@ class OurApp {
                 <div>
                     <span id="ourWeather">Weather: </span>
                 </div>
+                <div>
+                    <button id = 'd'>Depart</button>
+                </div>
             </div>`);
         this.currtime = this.elem.querySelector("#currTime");
         this.time = this.elem.querySelector("#ourTime");
         this.weather = this.elem.querySelector("#ourWeather");
+        this.departButton = this.elem.querySelector("#d");
+
+        this.departButton.addEventListener("click", () => {
+            Service.getTravelInfo().then(info => {
+                let timeOnRoad = info.distance / info.speed;
+                let estimate = new Date(meetingTime - timeOnRoad * 60000);
+                // console.log(estimate);
+                let actual = new Date(time);
+                if (actual <= estimate){
+                    alert("Congrats. You are on time!");
+                }else {
+                    alert("OH-HO. You are late!")
+                }
+            })
+        })
     }
 
     refresh() {
@@ -158,20 +176,24 @@ class CurrApp {
                     <span>Type "4321 That St"</span>
                 </div>
                 <div>
-                    <button>Search</button>
+                    <button id = 's'>Search</button>
                 </div>
                 <div>
                     <span id="currAppDepartTime">Estimated departure time: </span>
+                </div>
+                <div>
+                    <button id = 'd'>Depart</button>
                 </div>
             </div>`);
         this.currtime = this.elem.querySelector("#currTime");
         this.fromElem = this.elem.querySelector("#from");
         this.toElem = this.elem.querySelector("#to");
-        this.buttonElem = this.elem.querySelector("button");
+        this.searchButton = this.elem.querySelector("#s");
         this.spanElem = this.elem.querySelector("#currAppDepartTime");
         this.spanParent = this.elem.querySelector('#timeSpan');
+        this.departButton = this.elem.querySelector("#d");
 
-        this.buttonElem.addEventListener("click", () => {
+        this.searchButton.addEventListener("click", () => {
             if(this.fromElem.value === '1234 This St' && this.toElem.value === '4321 That St')
                 this.search();
             else
@@ -179,12 +201,27 @@ class CurrApp {
             // this.fromElem.value = '';
             // this.toElem.value = '';
         });
+
+        this.departButton.addEventListener("click", () => {
+            Service.getTravelInfo().then(info => {
+                let timeOnRoad = info.distance / info.speed;
+                let estimate = new Date(meetingTime - timeOnRoad * 60000);
+                // console.log(estimate);
+                let actual = new Date(time);
+                if (actual <= estimate){
+                    alert("Congrats. You are on time!");
+                }else {
+                    alert("OH-HO. You are late!")
+                }
+            })
+        })
     }
 
     search() {
         Service.getTravelInfo().then(info => {
             let timeOnRoad = info.distance / info.speed;
             departTime = new Date(meetingTime - timeOnRoad * 60000);
+            // console.log(departTime);
             this.spanElem.innerText = 'Estimated departure time: ' + timeToString(departTime);
         })
     }
