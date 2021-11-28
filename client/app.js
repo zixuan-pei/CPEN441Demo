@@ -380,6 +380,17 @@ function main() {
             pageView = document.getElementById("page");
             emptyDOM(pageView);
             pageView.appendChild(currApp.elem);
+            let alertTime = new Date('December 2, 2021 12:09:00');
+            let ret = setInterval(() => {
+                if (alertTime <= new Date(time)) {
+                    /* Alert message */
+                    let alertMessage = "You should leave at " + timeToString(new Date('December 2, 2021 12:10:00')) + ". Your meeting starts at " + timeToString(meetingTime);
+                    /* Alert */
+                    alert(alertMessage);
+                    clearInterval(ret);
+                }
+            }, 1000);
+
         } else if(url.includes('control')) {
             pageView = document.getElementById("page");
             emptyDOM(pageView);

@@ -8,7 +8,7 @@ function logRequest(req, res, next){
 }
 
 const host = 'localhost';
-const port = 5000;
+const port = 10000;
 const clientApp = path.join(__dirname, 'client');
 
 // express app
