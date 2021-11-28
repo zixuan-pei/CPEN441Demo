@@ -337,14 +337,13 @@ function main() {
     let renderRoute = () => {
         let url = window.location.hash;
         let pageView;
-        let ret;
         if(url === '#/') {
             pageView = document.getElementById("page");
             emptyDOM(pageView);
             pageView.appendChild(mainPage.elem);
             clearInterval(ret);
         } else if(url.includes('ourApp')) {
-            ret = setInterval(() => {
+            let ret = setInterval(() => {
                 if (departTime <= new Date(time).setMinutes(new Date(time).getMinutes() + 1)) {
 
                     /* Alert message */
@@ -381,18 +380,15 @@ function main() {
             pageView = document.getElementById("page");
             emptyDOM(pageView);
             pageView.appendChild(currApp.elem);
-            clearInterval(ret);
         } else if(url.includes('control')) {
             pageView = document.getElementById("page");
             emptyDOM(pageView);
             pageView.appendChild(control.elem);
-            clearInterval(ret);
         } else if(url.includes('weather')) {
             weatherPage.refresh();
             pageView = document.getElementById("page");
             emptyDOM(pageView);
             pageView.appendChild( weatherPage.elem);
-            clearInterval(ret);
         }
     };
     let renderInfo = () => {
