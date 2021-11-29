@@ -136,7 +136,6 @@ class OurApp {
             Service.getTravelInfo().then(info => {
                 let timeOnRoad = info.distance / info.speed;
                 let estimate = new Date(meetingTime - timeOnRoad * 60000);
-                // console.log(estimate);
                 let actual = new Date(time);
                 if (actual <= estimate){
                     alert("Congrats. You are on time!");
@@ -206,15 +205,12 @@ class CurrApp {
                 this.search();
             else
                 alert("Result not found, please try again.");
-            // this.fromElem.value = '';
-            // this.toElem.value = '';
         });
 
         this.departButton.addEventListener("click", () => {
             Service.getTravelInfo().then(info => {
                 let timeOnRoad = info.distance / info.speed;
                 let estimate = new Date(meetingTime - timeOnRoad * 60000);
-                // console.log(estimate);
                 let actual = new Date(time);
                 if (actual <= estimate){
                     alert("Congrats. You are on time!");
@@ -229,7 +225,6 @@ class CurrApp {
         Service.getTravelInfo().then(info => {
             let timeOnRoad = info.distance / info.speed;
             departTime = new Date(meetingTime - timeOnRoad * 60000);
-            // console.log(departTime);
             this.spanElem.innerText = 'Estimated departure time: ' + timeToString(departTime);
         })
     }
@@ -292,35 +287,35 @@ class Control {
         this.enable = this.elem.querySelector("#enable");
         this.disable = this.elem.querySelector("#disable");
         this.sunny.addEventListener("click", () => {
-            let info = {weather: 'sunny', speed: 0.25};
+            let info = {weather: 'sunny', speed: 0.4};
             Service.setInfo(info).then(response => {
                 console.log(response);
             });
         });
 
         this.rain.addEventListener("click", () => {
-            let info = {weather: 'rain', speed: 0.23};
+            let info = {weather: 'rain', speed: 0.38};
             Service.setInfo(info).then(response => {
                 console.log(response);
             });
         });
 
         this.snow.addEventListener("click", () => {
-            let info = {weather: 'snow', speed: 0.21};
+            let info = {weather: 'snow', speed: 0.37};
             Service.setInfo(info).then(response => {
                 console.log(response);
             });
         });
 
         this.enable.addEventListener("click", () => {
-            let info = {trafficJam: true, distance: 6.5};
+            let info = {trafficJam: true, distance: 10};
             Service.setInfo(info).then(response => {
                 console.log(response);
             });
         });
 
         this.disable.addEventListener("click", () => {
-            let info = {trafficJam: false, distance: 5};
+            let info = {trafficJam: false, distance: 6};
             Service.setInfo(info).then(response => {
                 console.log(response);
             });
@@ -341,10 +336,9 @@ function main() {
             pageView = document.getElementById("page");
             emptyDOM(pageView);
             pageView.appendChild(mainPage.elem);
-            clearInterval(ret);
         } else if(url.includes('ourApp')) {
             let ret = setInterval(() => {
-                if (departTime <= new Date(time).setMinutes(new Date(time).getMinutes() + 1)) {
+                if (departTime <= new Date(time).setMinutes(new Date(time).getMinutes() + 2)) {
 
                     /* Alert message */
                     let alertMessage = "You should leave at " + timeToString(departTime);
@@ -354,18 +348,6 @@ function main() {
                         alertMessage += ". It is raining outside. Bring an umbrella.";
                     else if (weather === 'sunny')
                         alertMessage += ". It's sunny outside. Have a nice day!";
-
-                    /* Alert audio */
-                    // let alertAudio = document.createElement('audio');
-                    // alertAudio.src = 'alertAudio.mp3';
-                    // alertAudio.autoplay = true;
-                    // ourApp.elem.appendChild(alertAudio);
-                    // alertAudio.play().then();
-                    // setTimeout(() => {
-                    //     alertAudio.parentNode.removeChild(alertAudio); console.log(ourApp.elem);
-                    // }, 3000);
-                    // console.log(alertAudio);
-                    // console.log(ourApp.elem);
 
                     /* Alert */
                     alert(alertMessage);
@@ -380,11 +362,11 @@ function main() {
             pageView = document.getElementById("page");
             emptyDOM(pageView);
             pageView.appendChild(currApp.elem);
-            let alertTime = new Date('December 2, 2021 12:09:00');
+            let alertTime = new Date('December 2, 2021 12:13:00');
             let ret = setInterval(() => {
                 if (alertTime <= new Date(time)) {
                     /* Alert message */
-                    let alertMessage = "You should leave at " + timeToString(new Date('December 2, 2021 12:10:00')) + ". Your meeting starts at " + timeToString(meetingTime);
+                    let alertMessage = "You should leave at " + timeToString(new Date('December 2, 2021 12:15:00')) + ". Your meeting starts at " + timeToString(meetingTime);
                     /* Alert */
                     alert(alertMessage);
                     clearInterval(ret);

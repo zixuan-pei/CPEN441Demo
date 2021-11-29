@@ -21,8 +21,8 @@ app.use(logRequest);							// logging for debug
 let info = {
     weather: 'sunny',
     trafficJam: false,
-    speed: 0.25,
-    distance: 5
+    speed: 0.4,
+    distance: 6
 }
 
 let time = new Date('December 2, 2021 11:59:59');
