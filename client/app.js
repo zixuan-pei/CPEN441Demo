@@ -329,6 +329,11 @@ function main() {
     let currApp = new CurrApp();
     let control = new Control();
     let mainPage = new MainPage();
+    if(undefined !== window.Notification) {
+        if (Notification.permission === "default") {
+            Notification.requestPermission();
+        }
+    }
     let renderRoute = () => {
         let url = window.location.hash;
         let pageView;
@@ -351,6 +356,10 @@ function main() {
 
                     /* Alert */
                     alert(alertMessage);
+                    let n = new Notification(alertMessage);
+                    n.onshow = function () {
+                        setTimeout(n.close.bind(n), 10000);
+                    }
                     clearInterval(ret);
                 }
             }, 1000);
@@ -369,6 +378,10 @@ function main() {
                     let alertMessage = "You should leave at " + timeToString(new Date('December 2, 2021 12:15:00')) + ". Your meeting starts at " + timeToString(meetingTime);
                     /* Alert */
                     alert(alertMessage);
+                    let n = new Notification(alertMessage);
+                    n.onshow = function () {
+                        setTimeout(n.close.bind(n), 5000);
+                    }
                     clearInterval(ret);
                 }
             }, 1000);

@@ -56,3 +56,4 @@ app.use('/', express.static(clientApp, { extensions: ['html'] }));
 app.listen(port, () => {
     console.log(`${new Date()}  App Started. Listening on ${host}:${port}, serving ${clientApp}`);
 });
+
