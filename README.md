@@ -5,5 +5,6 @@
 ### How to run
 ```
 cd CPEN441Demo
+npm install express
 npx nodemon server.js
 ```
