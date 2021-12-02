@@ -360,6 +360,10 @@ function main() {
                     n.onshow = function () {
                         setTimeout(n.close.bind(n), 10000);
                     }
+                    n.onclick = function(e) {
+                        window.open("http://localhost:10000/#/ourApp")
+                        console.log(1, e);
+                    }
                     clearInterval(ret);
                 }
             }, 1000);
@@ -380,7 +384,11 @@ function main() {
                     alert(alertMessage);
                     let n = new Notification(alertMessage);
                     n.onshow = function () {
-                        setTimeout(n.close.bind(n), 5000);
+                        setTimeout(n.close.bind(n), 10000);
+                    }
+                    n.onclick = function(e) {
+                        window.open("http://localhost:10000/#/currentApp")
+                        console.log(1, e);
                     }
                     clearInterval(ret);
                 }

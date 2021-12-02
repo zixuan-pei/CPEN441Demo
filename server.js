@@ -25,7 +25,7 @@ let info = {
     distance: 6
 }
 
-let time = new Date('December 2, 2021 11:59:59');
+let time = new Date('December 2, 2021 11:59:40');
 
 setInterval(() => {time.setSeconds(time.getSeconds() + 1);}, 1000);
 
