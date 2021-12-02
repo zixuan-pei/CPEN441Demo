@@ -348,11 +348,11 @@ function main() {
                     /* Alert message */
                     let alertMessage = "You should leave at " + timeToString(departTime);
                     if (weather === 'snow')
-                        alertMessage += ". It is snowing outside. Wear clothes and bring an umbrella.";
+                        alertMessage += ". It is snowing outside. Today\'s temperature is -1 ~ 2. Wear coat and bring an umbrella.";
                     else if (weather === 'rain')
-                        alertMessage += ". It is raining outside. Bring an umbrella.";
+                        alertMessage += ". It is raining outside. Today\'s temperature is 8 ~ 12. Bring an umbrella.";
                     else if (weather === 'sunny')
-                        alertMessage += ". It's sunny outside. Have a nice day!";
+                        alertMessage += ". It's sunny outside. Today\'s temperature is 20 ~ 24. Have a nice day!";
 
                     /* Alert */
                     alert(alertMessage);
